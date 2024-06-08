@@ -121,7 +121,6 @@ void* handle_connection(void* p_conn){
             free(request);
             char* resp = "Bad request";
             write_headers(client_sock, 400, resp, sizeof(resp));
-            // write(client_sock, resp, sizeof(resp));
             close(client_sock);
 		return NULL;
         }
@@ -131,7 +130,6 @@ void* handle_connection(void* p_conn){
         if(opened_fd == -1) {
             char* resp = "Not found";
             write_headers(client_sock, 404, resp, sizeof(resp));
-            // write(client_sock, resp, sizeof(resp));
             close(client_sock);
 		return NULL;
         }
@@ -140,5 +138,5 @@ void* handle_connection(void* p_conn){
         fstat(opened_fd, &sb);
         write_headers(client_sock, 200, "OK", sb.st_size);
         sendfile(client_sock, opened_fd, 0, sb.st_size);
-        //close(client_sock);
+        close(client_sock);
 }
